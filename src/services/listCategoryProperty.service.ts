@@ -3,30 +3,23 @@ import { Category } from "../entities/categories.entity"
 import { Property } from "../entities/properties.entity"
 import { AppError } from "../errors/appError"
 
-const listCategoryPropertyService = async (idCategory: string): Promise<Category[]>  => {
+const listCategoryPropertyService = async (idCategory: string): Promise<Category> => {
     const categoryRepository = AppDataSource.getRepository(Category)
     
-    const category = await categoryRepository.findOneBy({
-        id: idCategory
+    const category = await categoryRepository.findOne({
+        where: {
+            id: idCategory
+        }, relations: {
+            properties: true
+        }
     })
     if(!category){
         throw new AppError('Category not found', 404)
     }
-    
 
-    const categoryProperties = await categoryRepository.find({
-        where: {
-            property: {
-                category: {
-                    id: category.id
-                }
-            } 
-        }, relations: {
-            property: true
-        }
-    })
+    console.log(category)
 
-    return categoryProperties
+    return category
     
 }
 

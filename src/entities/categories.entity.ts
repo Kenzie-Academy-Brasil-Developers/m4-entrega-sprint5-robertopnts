@@ -9,8 +9,8 @@ class Category {
     @Column({length: 120, unique: true})
     name: string
 
-    @OneToMany(() => Property, property => property.id) 
-    property: Property[]
+    @OneToMany(() => Property, property => property.category) 
+    properties: Property
 }
 
 export {Category}
